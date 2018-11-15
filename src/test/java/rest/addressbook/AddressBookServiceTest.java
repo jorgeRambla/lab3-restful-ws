@@ -272,7 +272,26 @@ public class AddressBookServiceTest {
 		// Verify that PUT /contacts/person/2 is well implemented by the service, i.e
 		// complete the test to ensure that it is idempotent but not safe
 		//////////////////////////////////////////////////////////////////////	
-		// TODO: implementar updateUsers()
+		response = client
+				.target("http://localhost:8282/contacts/person/2")
+				.request(MediaType.APPLICATION_JSON)
+				.put(Entity.entity(maria, MediaType.APPLICATION_JSON));
+		assertEquals(200, response.getStatus());
+		assertEquals(MediaType.APPLICATION_JSON_TYPE, response.getMediaType());
+		juanUpdated = response.readEntity(Person.class);
+		assertEquals(maria.getName(), juanUpdated.getName());
+		assertEquals(2, juanUpdated.getId());
+		assertEquals(juanURI, juanUpdated.getHref());
+
+		// Verify that the update
+		response = client.target("http://localhost:8282/contacts/person/2")
+				.request(MediaType.APPLICATION_JSON).get();
+		assertEquals(200, response.getStatus());
+		assertEquals(MediaType.APPLICATION_JSON_TYPE, response.getMediaType());
+		mariaRetrieved = response.readEntity(Person.class);
+		assertEquals(maria.getName(), mariaRetrieved.getName());
+		assertEquals(2, mariaRetrieved.getId());
+		assertEquals(juanURI, mariaRetrieved.getHref());
 	}
 
 	@Test
