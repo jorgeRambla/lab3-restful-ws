@@ -170,11 +170,17 @@ public class AddressBookServiceTest {
 		// Verify that GET /contacts/person/3 is well implemented by the service, i.e
 		// complete the test to ensure that it is safe and idempotent
 		//////////////////////////////////////////////////////////////////////	
-		// TODO: implementar createUsers()
+		Response secondResponse = client.target("http://localhost:8282/contacts/person/3")
+				.request(MediaType.APPLICATION_JSON).get();
+		assertEquals(200, secondResponse.getStatus());
+		assertEquals(MediaType.APPLICATION_JSON_TYPE, secondResponse.getMediaType());
+		Person secondMaria = secondResponse.readEntity(Person.class);
+		assertEquals(mariaUpdated.getName(), secondMaria.getName());
+		assertEquals(3, secondMaria.getId());
 	}
 
 	@Test
-	public void listUsers() throws IOException {
+	public void  listUsers() throws IOException {
 
 		// Prepare server
 		AddressBook ab = new AddressBook();
