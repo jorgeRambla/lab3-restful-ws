@@ -20,6 +20,7 @@ import rest.addressbook.domain.AddressBook;
 import rest.addressbook.domain.Person;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -104,7 +105,16 @@ public class AddressBookServiceTest {
 		// Verify that POST /contacts is well implemented by the service, i.e
 		// complete the test to ensure that it is not safe and not idempotent
 		//////////////////////////////////////////////////////////////////////	
-		//TODO: implementar createUser()
+		Response secondResponse = client.target("http://localhost:8282/contacts")
+                .request(MediaType.APPLICATION_JSON)
+                .post(Entity.entity(juan, MediaType.APPLICATION_JSON));
+
+		// Response is okay
+        assertEquals(201, secondResponse.getStatus());
+		assertEquals(MediaType.APPLICATION_JSON_TYPE, secondResponse.getMediaType());
+		
+		// not safe and not idempotent
+        assertNotEquals(1, secondResponse.readEntity(Person.class).getId());
 		
 	}
 
