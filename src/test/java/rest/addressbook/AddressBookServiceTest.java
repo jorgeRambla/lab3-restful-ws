@@ -20,7 +20,6 @@ import rest.addressbook.domain.AddressBook;
 import rest.addressbook.domain.Person;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
 
 /**
  * A simple test suite.
@@ -57,7 +56,7 @@ public class AddressBookServiceTest {
 		// complete the test to ensure that it is safe and idempotent
 		//////////////////////////////////////////////////////////////////////
 
-		// make sencond request and check idempotence
+		// make sencond request and check is safe and idempotent
 		Response secondResponse = client.target("http://localhost:8282/contacts")
 				.request().get();
 		assertEquals(200, secondResponse.getStatus());
@@ -104,7 +103,7 @@ public class AddressBookServiceTest {
 		// Verify that POST /contacts is well implemented by the service, i.e
 		// complete the test to ensure that it is not safe and not idempotent
 		//////////////////////////////////////////////////////////////////////	
-		
+		//TODO: implementar createUser()
 		
 	}
 
@@ -160,7 +159,7 @@ public class AddressBookServiceTest {
 		// Verify that GET /contacts/person/3 is well implemented by the service, i.e
 		// complete the test to ensure that it is safe and idempotent
 		//////////////////////////////////////////////////////////////////////	
-	
+		// TODO: implementar createUsers()
 	}
 
 	@Test
@@ -192,7 +191,7 @@ public class AddressBookServiceTest {
 		// Verify that GET /contacts is well implemented by the service, i.e
 		// complete the test to ensure that it is safe and idempotent
 		//////////////////////////////////////////////////////////////////////	
-	
+		// TODO: implementar listUsers()
 	}
 
 	@Test
@@ -245,7 +244,7 @@ public class AddressBookServiceTest {
 		// Verify that PUT /contacts/person/2 is well implemented by the service, i.e
 		// complete the test to ensure that it is idempotent but not safe
 		//////////////////////////////////////////////////////////////////////	
-	
+		// TODO: implementar updateUsers()
 	}
 
 	@Test
