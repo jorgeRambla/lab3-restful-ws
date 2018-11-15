@@ -20,6 +20,7 @@ import rest.addressbook.domain.AddressBook;
 import rest.addressbook.domain.Person;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * A simple test suite.
@@ -176,6 +177,8 @@ public class AddressBookServiceTest {
 		launchServer(ab);
 
 		// Test list of contacts
+		int firstResult;
+		String firstName;
 		Client client = ClientBuilder.newClient();
 		Response response = client.target("http://localhost:8282/contacts")
 				.request(MediaType.APPLICATION_JSON).get();
@@ -183,15 +186,24 @@ public class AddressBookServiceTest {
 		assertEquals(MediaType.APPLICATION_JSON_TYPE, response.getMediaType());
 		AddressBook addressBookRetrieved = response
 				.readEntity(AddressBook.class);
-		assertEquals(2, addressBookRetrieved.getPersonList().size());
-		assertEquals(juan.getName(), addressBookRetrieved.getPersonList()
+		assertEquals(2, firstResult = addressBookRetrieved.getPersonList().size());
+		assertEquals(juan.getName(), firstName = addressBookRetrieved.getPersonList()
 				.get(1).getName());
 
 		//////////////////////////////////////////////////////////////////////
 		// Verify that GET /contacts is well implemented by the service, i.e
 		// complete the test to ensure that it is safe and idempotent
 		//////////////////////////////////////////////////////////////////////	
-		// TODO: implementar listUsers()
+		// check is idempotent && safe. 1st request equals second :: sizes are equals and elements are the same
+
+		Response secondResponse = client.target("http://localhost:8282/contacts")
+			.request(MediaType.APPLICATION_JSON).get();
+		assertEquals(200, secondResponse.getStatus());
+		AddressBook secondAddressBookRetrieved = secondResponse
+				.readEntity(AddressBook.class);
+		assertEquals(firstResult, secondAddressBookRetrieved.getPersonList().size());
+		assertTrue(secondAddressBookRetrieved.getPersonList().get(1).getName().equals(firstName));
+
 	}
 
 	@Test
